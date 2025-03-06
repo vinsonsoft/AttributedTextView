@@ -8,7 +8,7 @@
 import UIKit
 
 /**
- Set this class as the 'Custom Class' when you add a UITextView in the interfacebuilder. 
+ Set this class as the 'Custom Class' when you add a UITextView in the interfacebuilder.
  Use the attributer property for setting the attributed text.
 
  You can create your own textview class and use this class as it's base class. override the configureAttributedLabel function and set the self.attributer to your prefered styling. For instance self.attributer = self.text?.myHeader See the samples for how you could add your own custom property for interface builder and alsu use that.
@@ -73,7 +73,7 @@ import UIKit
             }
             return _attributer!
         }
-        set { 
+        set {
             _attributer = newValue
             self.attributedText = _attributer?.attributedText
 
@@ -184,7 +184,7 @@ import UIKit
      */
     @available(iOS 10.0, *)
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        _attributer?.interactWithURL(URL: URL)
+        _attributer?.interactWithURL(URL: URL, interaction: interaction)
         return _delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? false
     }
     
@@ -210,7 +210,7 @@ import UIKit
      */
     @available(iOS, introduced: 7.0, deprecated: 10.0, message: "Use textView:shouldInteractWithURL:inRange:forInteractionType: instead")
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        _attributer?.interactWithURL(URL: URL)
+        _attributer?.interactWithURL(URL: URL, interaction: nil)
         return _delegate?.textView!(textView, shouldInteractWith: URL, in: characterRange) ?? false
     }
     

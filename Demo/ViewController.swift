@@ -36,13 +36,13 @@ class ViewController: UIViewController {
     func decorate(_ id: Int, _ builder: ((_ content: Attributer) -> Attributer)) -> Attributer {
         var b = "Sample \(id + 1) of \(samples.count): \(samples[id].title)\n\n".red
         if id > 0  {
-            b = b + "<-- previous sample\n\n".underline.makeInteract { _ in
+            b = b + "<-- previous sample\n\n".underline.makeInteract { _,_  in
                 self.samples[id - 1].show()
             }
         }
         b = builder(b) // Now add the content
         if id < (samples.count - 1) {
-            b = b + "\n\nnext sample -->".underline.makeInteract { _ in
+            b = b + "\n\nnext sample -->".underline.makeInteract { _,_  in
                 self.samples[id + 1].show()
             }
         }
@@ -54,7 +54,7 @@ class ViewController: UIViewController {
         attributedTextView.attributer = decorate(0) { content in return content
             .append("This is the first test. ").green
             .append("Tap on ").black
-            .append("evict.nl").makeInteract { _ in
+            .append("evict.nl").makeInteract { _,_  in
                 if #available(iOS 10, *) {
                     UIApplication.shared.open(URL(string: "http://evict.nl")!, options: [:], completionHandler: {  (completed) in })
                 } else {
@@ -63,7 +63,7 @@ class ViewController: UIViewController {
             }.underline
             .append(" for testing links. Or tap on the 'next sample' link below ").black
             .underline(.double, .patternDashDotDot)
-            .append("[test]").makeInteract { text in
+            .append("[test]").makeInteract { text,arg  in
                 print("makeInteract : \(text)")
             }
         }
@@ -101,7 +101,7 @@ class ViewController: UIViewController {
         attributedTextView.attributer = decorate(3) { content in return content
             + "@test: What #hashtags do we have in @evermeer #AtributedTextView library"
             .matchHashtags.underline
-            .makeInteract { link in
+            .makeInteract { link,arg  in
                 if #available(iOS 10, *) {
                     UIApplication.shared.open(URL(string: "https://twitter.com/hashtag/\(link.replacingOccurrences(of: "%23", with: ""))")!, options: [:], completionHandler: { completed in })
                 } else {
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
                 }
             }
             .matchMentions
-            .makeInteract { link in
+            .makeInteract { link,arg  in
                 if #available(iOS 10, *) {
                     UIApplication.shared.open(URL(string: "https://twitter.com/\(link.replacingOccurrences(of: "%40", with: ""))")!, options: [:], completionHandler: { completed in })
                 } else {
@@ -152,10 +152,10 @@ class ViewController: UIViewController {
     func showSample8() {
         attributedTextView.attributer = decorate(7) { content in return (content + (
             "The quick brown fox jumps over the lazy dog.\nPack my box with five dozen liquor jugs.\nSeveral fabulous dixieland jazz groups played with quick tempo.".brown
-                .match("brown fox").underline.makeInteract { (link) in
+                .match("brown fox").underline.makeInteract { link,arg  in
                     print("TODO: open terms of user screen")
                 }
-                .match("fabulous dixieland").underline.makeInteract { (link) in
+                .match("fabulous dixieland").underline.makeInteract { link,arg  in
                     print("TODO: open privacy policy")
                 }.all.paragraphAlignRight.paragraphApplyStyling
             ))

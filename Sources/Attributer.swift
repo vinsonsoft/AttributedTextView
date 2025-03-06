@@ -26,7 +26,7 @@ open class Attributer {
     /**
      Save all the callbacks (from the .makeInteract)
      */
-    fileprivate var urlCallbacks: [String : ((_ link: String) -> ())] = [:]
+    fileprivate var urlCallbacks: [String : ((_ link: String, _ interaction: UITextItemInteraction?) -> ())] = [:]
     
     /**
      Do we have interactions
@@ -566,7 +566,7 @@ open class Attributer {
      
      -parameter callback: The callback function that will be called when using AttributedTextView
      */
-    open func makeInteract(_ callback: @escaping ((_ link: String) -> ())) -> Attributer {
+    open func makeInteract(_ callback: @escaping ((_ link: String, _ interaction: UITextItemInteraction?) -> ())) -> Attributer {
         for nsRange in self.ranges {
             guard nsRange.location != NSNotFound else { return self }
             let unEscapedString = (self.attributedText.string as NSString).substring(with: nsRange)
@@ -593,9 +593,9 @@ open class Attributer {
      
      -parameter URL: The URL that was touched
      */
-    public func interactWithURL(URL: URL) {
+    public func interactWithURL(URL: URL, interaction: UITextItemInteraction?) {
         let unescapedString = URL.absoluteString.replacingOccurrences(of: "AttributedTextView:", with: "").removingPercentEncoding ?? ""
-        urlCallbacks[unescapedString]?(unescapedString)
+        urlCallbacks[unescapedString]?(unescapedString, interaction)
     }
     
     /**

@@ -18,7 +18,7 @@ public extension String {
         }
     }
     
-    // All functions below just forward the call to the Attributer 
+    // All functions below just forward the call to the Attributer
     
     
     // MARK: - Color functions
@@ -365,7 +365,7 @@ public extension String {
      
      -parameter callback: The callback function that will be called when using AttributedTextView
      */
-    func makeInteract(_ callback: @escaping ((_ link: String) -> ())) -> Attributer {
+    func makeInteract(_ callback: @escaping ((_ link: String, _ interaction: UITextItemInteraction?) -> ())) -> Attributer {
         return attributer.makeInteract(callback)
     }
     
@@ -384,7 +384,7 @@ public extension String {
      -parameter URL: The URL that was touched
      */
     func interactWithURL(URL: URL) {
-        return attributer.interactWithURL(URL: URL)
+        return attributer.interactWithURL(URL: URL, interaction: nil)
     }
     
     /**
@@ -859,5 +859,5 @@ public extension String {
      
      @available(tvOS 9.0, *)
      public func setParagraphStyle(_ obj: NSParagraphStyle)
-     */    
+     */
 }
